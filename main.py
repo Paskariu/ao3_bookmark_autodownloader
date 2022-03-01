@@ -40,9 +40,15 @@ def getBookmarkedWorks():
     time.sleep(20)
 
 def downloadWork(work):
-  filename = work.title + "." + formats[formatIndex].lower()
+  filename = validateFilename(work.title) + "." + formats[formatIndex].lower()
   with open(os.path.join(directory,filename), "wb") as file:
     file.write(work.download(formats[formatIndex]))
+
+def validateFilename(name):
+  invalidCharacters=["<",">",'"',"/","\\","|","*"]
+  for char in invalidCharacters:
+    name.replace(char,"")
+  return name
 
 if __name__ == "__main__":
   main()
