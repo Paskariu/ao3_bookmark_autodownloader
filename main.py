@@ -28,7 +28,7 @@ def menu():
   print("Works will now be downloaded. This could take a while.")
 
 def getBookmarkedWorks():
-  for i in range(1,AO3.User(username).bookmarks+1):
+  for i in range(3,AO3.User(username).bookmarks+1):
     baseUrl="https://archiveofourown.org/bookmarks/search?utf8=%E2%9C%93&bookmark_search%5Bbookmarkable_query%5D=&bookmark_search%5Bother_tag_names%5D=&bookmark_search%5Bbookmarkable_type%5D=&bookmark_search%5Blanguage_id%5D=&bookmark_search%5Bbookmarkable_date%5D=&bookmark_search%5Bbookmark_query%5D=&bookmark_search%5Bother_bookmark_tag_names%5D=&bookmark_search%5Bbookmarker%5D="+username+"&bookmark_search%5Bbookmark_notes%5D=&bookmark_search%5Brec%5D=0&bookmark_search%5Bwith_notes%5D=0&bookmark_search%5Bdate%5D=&bookmark_search%5Bsort_column%5D=created_at&commit=Search+Bookmarks&page="+str(i)+""
     soup = BeautifulSoup(urllib.request.urlopen(baseUrl),"html.parser")
     for temp in soup.find_all(class_="heading"):
@@ -36,7 +36,7 @@ def getBookmarkedWorks():
         tempWork=AO3.Work((str(line).split('"')[1].split("/")[2]))
         print("Downloading: " + tempWork.title)
         downloadWork(tempWork)
-    print("Sleep for" + str(timeoutSeconds) + " seconds to prevent networktimeout")
+    print("Sleep for " + str(timeoutSeconds) + " seconds to prevent networktimeout")
     time.sleep(timeoutSeconds)
 
 def downloadWork(work):
@@ -45,10 +45,7 @@ def downloadWork(work):
     file.write(work.download(formats[formatIndex]))
 
 def validateFilename(name):
-  invalidCharacters=["<",">",'"',"/","\\","|","*"]
-  for char in invalidCharacters:
-    name.replace(char,"")
-  return name
+  return re.sub('[<>?"/\\|*?]','',name)
 
 if __name__ == "__main__":
   main()
