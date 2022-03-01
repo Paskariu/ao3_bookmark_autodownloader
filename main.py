@@ -36,8 +36,8 @@ def getBookmarkedWorks():
         tempWork=AO3.Work((str(line).split('"')[1].split("/")[2]))
         print("Downloading: " + tempWork.title)
         downloadWork(tempWork)
-    print("Sleep for" + timeoutSeconds + " seconds to prevent networktimeout")
-    time.sleep(20)
+    print("Sleep for" + str(timeoutSeconds) + " seconds to prevent networktimeout")
+    time.sleep(timeoutSeconds)
 
 def downloadWork(work):
   filename = validateFilename(work.title) + "." + formats[formatIndex].lower()
