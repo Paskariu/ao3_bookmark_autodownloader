@@ -10,6 +10,7 @@ directory="bookmarks"
 formats=["AZW3","PDF","MOBI","EPUB","HTML"]
 formatIndex=1
 timeoutSeconds=240
+countDownloads=0
 
 def main():
   menu()
@@ -44,14 +45,18 @@ def getBookmarkedWorks():
         tempWork=AO3.Work(getIdFromSoupLine(line))
         print("Downloading: " + tempWork.title)
         downloadWork(tempWork)
-    if i%5==0:
-      print("Sleep for " + str(timeoutSeconds) + " seconds to prevent networktimeout")
-      time.sleep(timeoutSeconds)
 
 def downloadWork(work):
   filename = validateFilename(work.title) + "." + formats[formatIndex].lower()
   with open(os.path.join(directory,filename), "wb") as file:
     file.write(work.download(formats[formatIndex]))
+  countDownloads = countDownloads+1
+  timeout()
+
+def timeout():
+  if countDownloads%100==0:
+    print("Sleep for " + str(timeoutSeconds) + " seconds to prevent networktimeout. Please remain patient.")
+    time.sleep(timeoutSeconds)
 
 def getIdFromSoupLine(line):
   return str(line).split('"')[1].split("/")[2]
