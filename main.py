@@ -9,7 +9,7 @@ username="paskariu"
 directory="bookmarks"
 formats=["PDF","EPUB",]
 formatIndex=1
-timeoutSeconds=20
+timeoutSeconds=240
 
 def main():
   menu()
@@ -36,8 +36,9 @@ def getBookmarkedWorks():
         tempWork=AO3.Work((str(line).split('"')[1].split("/")[2]))
         print("Downloading: " + tempWork.title)
         downloadWork(tempWork)
-    print("Sleep for " + str(timeoutSeconds) + " seconds to prevent networktimeout")
-    time.sleep(timeoutSeconds)
+    if i%5==0:
+      print("Sleep for " + str(timeoutSeconds) + " seconds to prevent networktimeout")
+      time.sleep(timeoutSeconds)
 
 def downloadWork(work):
   filename = validateFilename(work.title) + "." + formats[formatIndex].lower()
