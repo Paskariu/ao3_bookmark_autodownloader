@@ -17,6 +17,7 @@ def main():
   if not os.path.exists(directory):
     os.makedirs(directory)
   getBookmarkedWorks()
+  print("Downloads finished. This application will now stop.")
 
 def menu():
   print("Please enter your username:")
@@ -50,7 +51,8 @@ def downloadWork(work):
   filename = validateFilename(work.title) + "." + formats[formatIndex].lower()
   with open(os.path.join(directory,filename), "wb") as file:
     file.write(work.download(formats[formatIndex]))
-  countDownloads = countDownloads+1
+  global countDownloads
+  countDownloads = countDownloads + 1
   timeout()
 
 def timeout():
