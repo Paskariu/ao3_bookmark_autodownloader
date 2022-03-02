@@ -67,7 +67,7 @@ def downloadWork(work):
   timeout()
 
 def timeout():
-  if countDownloads%100==0:
+  if countDownloads%70==0:
     print("Sleep for " + str(timeoutSeconds) + " seconds to prevent networktimeout. Please remain patient.")
     time.sleep(timeoutSeconds)
 
